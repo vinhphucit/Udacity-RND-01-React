@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import * as BookAPI from '../../../BooksAPI';
-import * as Constant from '../../../Constants';
+import * as BookAPI from "../../../BooksAPI";
+import * as Constant from "../../../Constants";
 export default class BookSearchRow extends React.Component {
 
-    onShelfChange = (book, type) =>{
-        BookAPI.update(book,type).then(()=>{
+    onShelfChange = (book, type) => {
+        BookAPI.update(book, type).then(() => {
+            this.props.updateBookState(book, type);
         })
     }
 
@@ -21,8 +22,8 @@ export default class BookSearchRow extends React.Component {
                             className="book-cover"
                             style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`}}>
                         </div>
-                        <div className="book-shelf-changer" >
-                            <select value={book.shelf?book.shelf:Constant.none} onChange={(evt) => {
+                        <div className="book-shelf-changer">
+                            <select value={book.shelf ? book.shelf : Constant.none} onChange={(evt) => {
                                 this.onShelfChange(book, evt.target.value)
                             }}>
                                 <option value="none" disabled>Move to...</option>
@@ -46,5 +47,6 @@ export default class BookSearchRow extends React.Component {
     }
 }
 BookSearchRow.propTypes = {
-    book: PropTypes.object.isRequired
+    book: PropTypes.object.isRequired,
+    updateBookState: PropTypes.func.isRequired
 }

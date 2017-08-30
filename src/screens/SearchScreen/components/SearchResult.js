@@ -2,6 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import BookSearchRow from "./BookSearchRow";
 export default class SearchResult extends React.Component {
+    onUpdateBookState = (book, type) => {
+        const {books} = this.state;
+        books.map((cbook)=>{
+            if(book.id === cbook.id){
+                cbook.shelf = type;
+                return cbook;
+            }
+        })
+
+    }
 
     render() {
         const {books} = this.props;
@@ -10,7 +20,7 @@ export default class SearchResult extends React.Component {
                 <ol className="books-grid">
                     {
                         books.map((book) => (
-                                <BookSearchRow book={book} key={book.id}/>
+                                <BookSearchRow book={book} updateBookState={this.props.updateBookState} key={book.id}/>
                             )
                         )
                     }
@@ -21,5 +31,6 @@ export default class SearchResult extends React.Component {
 }
 
 SearchResult.propTypes = {
-    books: PropTypes.array.isRequired
+    books: PropTypes.array.isRequired,
+    updateBookState: PropTypes.func.isRequired
 }

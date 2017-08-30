@@ -7,7 +7,7 @@ class SearchScreen extends React.Component {
     state = {
         isLoading: true,
         books: [],
-        currentBooks: []
+        sheftBooks: []
     }
 
     componentDidMount() {
@@ -19,16 +19,29 @@ class SearchScreen extends React.Component {
     processBooks = (books) => {
 
         this.setState((state) => {
-            state.currentBooks = books,
+            state.sheftBooks = books,
                 state.isLoading = false
         });
     }
+    onUpdateBookState = (book, type) => {
+        const {books} = this.state;
+        books.map((cbook)=>{
+            if(book.id === cbook.id){
+                cbook.shelf = type;
+                return cbook;
+            }
+            return cbook;
+        });
+        this.setState((state)=>{
+            state.books = books;
+        })
 
+    }
     searchBook = (query) => {
         BookAPI.search(query, 20).then((books) => {
-            const {currentBooks} = this.state;
+            const {sheftBooks} = this.state;
             books.map((book) => {
-                currentBooks.forEach(function (currentBook) {
+                sheftBooks.forEach(function (currentBook) {
                     if (currentBook.id === book.id) {
                         book.shelf = currentBook.shelf;
                         return book;
@@ -57,7 +70,7 @@ class SearchScreen extends React.Component {
         return (
             <div className="search-books">
                 <NavigationSearch onSearchBook={this.searchBook}/>
-                <SearchResult books={books}/>
+                <SearchResult updateBookState={this.onUpdateBookState} books={books}/>
             </div>
         )
     }
