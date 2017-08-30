@@ -5,10 +5,7 @@ import * as Constants from "./../../Constants";
 import BookRow from "./components/BookRow";
 class BookshelfScreen extends React.Component {
     state = {
-        books: [],
-        currentlyReadingBooks: [],
-        wantToReadBooks: [],
-        readBooks: []
+        books: []
     }
 
     getAllBooks() {
@@ -20,16 +17,7 @@ class BookshelfScreen extends React.Component {
     processBooks = (books) =>{
 
         this.setState({
-            books: books,
-            currentlyReadingBooks: books.filter((book) => {
-                return book.shelf === Constants.currentlyReading
-            }),
-            wantToReadBooks: books.filter((book) => {
-                return book.shelf === Constants.wantToRead
-            }),
-            readBooks: books.filter((book) => {
-                return book.shelf === Constants.read
-            })
+            books: books
         });
     }
     onReloadBooks = (book,type) =>{
@@ -48,8 +36,16 @@ class BookshelfScreen extends React.Component {
     }
 
     render() {
-        const {currentlyReadingBooks, wantToReadBooks, readBooks} = this.state;
-
+        const {books} = this.state;
+        let currentlyReadingBooks = books.filter((book) => {
+            return book.shelf === Constants.currentlyReading
+        });
+        let wantToReadBooks = books.filter((book) => {
+            return book.shelf === Constants.wantToRead
+        });
+        let readBooks = books.filter((book) => {
+            return book.shelf === Constants.read
+        });
         return (
             <div className="list-books">
                 <div className="list-books-title">
